@@ -39,6 +39,7 @@ jobs:
         if git rev-parse --verify test-CI >/dev/null 2>&1
         then
             git checkout $BRANCH_NAME
+            git pull
         else
             git checkout -b $BRANCH_NAME upstream/main
         fi

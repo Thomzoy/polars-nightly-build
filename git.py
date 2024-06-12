@@ -11,15 +11,22 @@ import subprocess
 def get_latest_tag():
     try:
         # Run the git command to get the latest tag
-        result = subprocess.run(['git', 'describe', '--tags', '--abbrev=0'], stdout=subprocess.PIPE)
-        # Decode the output and return it
-        latest_tag = result.stdout.decode().strip()
+        result = subprocess.run(
+            """echo $(git describe --tags "$(git rev-list --tags --max-count=1)")""",
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            shell=True,
+            check=False,
+        )
+        latest_tag = result.stdout.decode('utf-8').strip()
         return latest_tag
+
     except Exception as e:
         print("Error:", e)
         return None
 
 def install_tag(tag):
+    print(f"Installing {tag}")
     subprocess.run(['git', 'checkout', f"tags/{tag}"], check=True)
     subprocess.run(['pip', 'install', "-y" ,"*.whl"], check=True, cwd="./dist")
 
@@ -34,3 +41,4 @@ def install(tag=None):
         print("Error:", e)
 
 install()
+

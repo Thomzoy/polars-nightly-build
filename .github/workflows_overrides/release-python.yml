@@ -1,17 +1,12 @@
 name: Release Python
 
-permissions:
-  actions: write
-  contents: write
-  deployments: write
-
 on:
   workflow_dispatch:
   push:
 
-# concurrency:
-#   group: ${{ github.workflow }}-${{ github.ref }}
-#   cancel-in-progress: true
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 env:
   PYTHON_VERSION: '3.8'
@@ -43,7 +38,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-         token: ${{ secrets.POLARS_RELEASE }}
+          ref: ${{ inputs.sha }}
 
       # Avoid potential out-of-memory errors
       - name: Set swap space for Linux
@@ -136,6 +131,17 @@ jobs:
           git config --global user.name "GH Actions"
           git add dist/
           git commit -m "[skip-ci] Add wheel"
-          git tag ${{ github.ref_name }}
-          git push --follow-tags
+          git push
 
+  tag:
+    runs-on: ubuntu-latest
+    if: ${{ always() }}
+    needs: [build-wheels]
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+         token: ${{ secrets.POLARS_RELEASE }}
+      run: |
+        git tag -a ${{ github.ref_name }} -m ${{ github.ref_name }}
+        git push --follow-tags

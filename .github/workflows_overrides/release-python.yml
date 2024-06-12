@@ -1,0 +1,47 @@
+permissions:
+  actions: write
+  contents: write
+  deployments: write
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  display-variables:
+    name: Prepare build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+         token: ${{ secrets.POLARS_RELEASE }}
+
+    - name: Configure GIT
+      run: |
+        git config --global user.email "gh-action@github.com"
+        git config --global user.name "GH Actions"
+        git remote add upstream https://github.com/pola-rs/polars.git
+        git fetch upstream
+
+    - name: Get modified workflow YAML
+      run: |
+        git fetch origin
+        RELEASE_PYTHON_YML_64=$(base64 -w 0 .github/workflows_overrides/release-python.yml)
+        echo "RELEASE_PYTHON_YML_64=$RELEASE_PYTHON_YML_64" >> "$GITHUB_ENV"
+
+
+    - name: Create and Push Branch
+      run: |
+        export BRANCH_NAME='nightly-'$(date +%Y%m%d)
+        if git rev-parse --verify test-CI >/dev/null 2>&1
+        then
+            git checkout $BRANCH_NAME
+        else
+            git checkout -b $BRANCH_NAME upstream/main
+        fi
+        echo $RELEASE_PYTHON_YML_64 | base64 --decode > .github/workflows/release-python.yml
+        git add .github/workflows/release-python.yml
+        git commit -m "Updated workflow for"$BRANCH_NAME
+        git push --set-upstream origin $BRANCH_NAME

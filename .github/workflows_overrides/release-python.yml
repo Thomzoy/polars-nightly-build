@@ -25,10 +25,10 @@ jobs:
       fail-fast: false
       matrix:
         package: [polars]
-        os: [ubuntu-latest, macos-13, windows-32gb-ram]
+        os: [windows-2022, ubuntu-latest, macos-13]
         architecture: [x86-64, aarch64]
         exclude:
-          - os: windows-32gb-ram
+          - os: windows-2022
             architecture: aarch64
 
     env:

@@ -1,5 +1,10 @@
 name: Release Python
 
+permissions:
+  actions: write
+  contents: write
+  deployments: write
+
 on:
   workflow_dispatch:
   push:
@@ -37,8 +42,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: ${{ inputs.sha }}
+      with:
+         token: ${{ secrets.POLARS_RELEASE }}
 
       # Avoid potential out-of-memory errors
       - name: Set swap space for Linux

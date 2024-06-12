@@ -150,7 +150,7 @@ jobs:
           git config --global user.email "gh-action@github.com"
           git config --global user.name "GH Actions"
           git add dist/
-          git commit -m "[skip-ci] Add wheel"
+          git commit -m "[skip ci] Add wheel"
           git tag -a ${{ github.ref_name }} -m ${{ github.ref_name }}
           git push
           git push --tags

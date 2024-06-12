@@ -1,6 +1,6 @@
 # Nightly build of Polars's main branch
 
-Each build is available in a dedicated branch named `nightly-YYYYMMDD`, with `YYYYMMDD` being the date of the build
+Each build is available in a dedicated branch/tag named `nightly-YYYYMMDD`, with `YYYYMMDD` being the date of the build
 
 ## How to use
 ### 1. Using last available build
@@ -23,4 +23,4 @@ pip install --find-links=./dist polars
 ```
 ## Which builds are available ?
 
-Just check the branch names !
+Just check the [tags](https://github.com/Thomzoy/polars-nightly/tags) !

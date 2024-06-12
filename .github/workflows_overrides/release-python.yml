@@ -124,25 +124,33 @@ jobs:
         run: |
           pip install --force-reinstall --verbose dist/*.whl
           python -c 'import polars'
-
-      - name: Upload to branch
-        run: |
-          git config --global user.email "gh-action@github.com"
-          git config --global user.name "GH Actions"
-          git add dist/
-          git commit -m "[skip-ci] Add wheel"
-          git push
+      
+      - name: Upload wheel
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheel-${{ matrix.package }}-${{ matrix.os }}-${{ matrix.architecture }}
+          path: dist/*.whl
 
   tag:
     runs-on: ubuntu-latest
     if: ${{ always() }}
     needs: [build-wheels]
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      with:
-         token: ${{ secrets.POLARS_RELEASE }}
-    - name: Tag
-      run: |
-        git tag -a ${{ github.ref_name }} -m ${{ github.ref_name }}
-        git push --follow-tags
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+           token: ${{ secrets.POLARS_RELEASE }}
+      - name: Download sdists and wheels
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+      - name: Upload and tag
+        run: |
+          git config --global user.email "gh-action@github.com"
+          git config --global user.name "GH Actions"
+          git add dist/
+          git commit -m "[skip-ci] Add wheel"
+          git tag -a ${{ github.ref_name }} -m ${{ github.ref_name }}
+          git push
+          git push --tags

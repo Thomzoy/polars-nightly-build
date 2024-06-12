@@ -42,7 +42,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      with:
+        with:
          token: ${{ secrets.POLARS_RELEASE }}
 
       # Avoid potential out-of-memory errors

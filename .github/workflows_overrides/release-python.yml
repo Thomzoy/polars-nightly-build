@@ -131,4 +131,6 @@ jobs:
           git config --global user.name "GH Actions"
           git add dist/
           git commit -m "[skip-ci] Add wheel"
-          git push
+          git tag ${{ github.ref_name }}
+          git push --follow-tags
+

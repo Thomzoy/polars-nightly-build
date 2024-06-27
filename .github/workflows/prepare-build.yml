@@ -28,7 +28,7 @@ jobs:
 
     - name: Get modified workflow YAML
       run: |
-        git fetch origin
+        git pull --depth 1 origin main
         RELEASE_PYTHON_YML_64=$(base64 -w 0 .github/workflows_overrides/release-python.yml)
         echo "RELEASE_PYTHON_YML_64=$RELEASE_PYTHON_YML_64" >> "$GITHUB_ENV"
 

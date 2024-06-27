@@ -45,6 +45,7 @@ jobs:
         fi
         echo $RELEASE_PYTHON_YML_64 | base64 --decode > .github/workflows/release-python.yml
         sed -i.bak -E "s/^version = \".*\"$/version = \"$VERSION\"/" ./py-polars/Cargo.toml
+        sed -i -E "s/(version = \".+)(\".*)/\1.$VERSION\2/" ./py-polars/Cargo.toml
         git add .
         git commit -m "Updated workflow for "$VERSION
         git push --set-upstream origin $VERSION

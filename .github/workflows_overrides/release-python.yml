@@ -25,8 +25,8 @@ jobs:
       fail-fast: false
       matrix:
         package: [polars]
-        os: ubuntu-latest #[windows-2022, ubuntu-latest, macos-13]
-        architecture: x86-64 #[x86-64, aarch64]
+        os: [ubuntu-latest] #[windows-2022, ubuntu-latest, macos-13]
+        architecture: [x86-64] #[x86-64, aarch64]
         exclude:
           - os: windows-2022
             architecture: aarch64

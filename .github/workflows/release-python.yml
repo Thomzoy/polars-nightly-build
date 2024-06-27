@@ -25,11 +25,11 @@ jobs:
       fail-fast: false
       matrix:
         package: [polars]
-        os: [windows-2022, ubuntu-latest, macos-13]
-        architecture: [x86-64, aarch64]
-        exclude:
-          - os: windows-2022
-            architecture: aarch64
+        os: [ubuntu-latest] #[windows-2022, ubuntu-latest, macos-13]
+        architecture: [x86-64] #, aarch64]
+        # exclude:
+        #   - os: windows-2022
+        #     architecture: aarch64
 
     env:
       SED_INPLACE: ${{ matrix.os == 'macos-13' && '-i ''''' || '-i'}}

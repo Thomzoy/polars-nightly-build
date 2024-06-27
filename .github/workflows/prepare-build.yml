@@ -35,16 +35,16 @@ jobs:
 
     - name: Create and Push Branch
       run: |
-        export BRANCH_NAME=$(date +%Y%m%d)
+        export VERSION=$(date +%Y%m%d)
         if git rev-parse --verify test-CI >/dev/null 2>&1
         then
-            git checkout $BRANCH_NAME
+            git checkout $VERSION
             git pull
         else
-            git checkout -b $BRANCH_NAME upstream/main
+            git checkout -b $VERSION upstream/main
         fi
         echo $RELEASE_PYTHON_YML_64 | base64 --decode > .github/workflows/release-python.yml
         sed -i.bak -E "s/^version = \".*\"$/version = \"$VERSION\"/" ./py-polars/Cargo.toml
         git add .
-        git commit -m "Updated workflow for "$BRANCH_NAME
-        git push --set-upstream origin $BRANCH_NAME
+        git commit -m "Updated workflow for "$VERSION
+        git push --set-upstream origin $VERSION

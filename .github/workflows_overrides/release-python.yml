@@ -154,3 +154,25 @@ jobs:
           git tag -a ${{ github.ref_name }} -m ${{ github.ref_name }}
           git push
           git push --tags
+
+  publish-to-pypi:
+    needs: [build-wheels]
+    environment:
+      name: release-python
+      url: https://pypi.org/project/polars-nightly
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+
+    steps:
+      - name: Download sdists and wheels
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Publish to PyPI
+        if: inputs.dry-run == false
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          verbose: true

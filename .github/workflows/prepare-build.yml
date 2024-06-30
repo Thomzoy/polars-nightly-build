@@ -32,7 +32,6 @@ jobs:
         RELEASE_PYTHON_YML_64=$(base64 -w 0 .github/workflows_overrides/release-python.yml)
         echo "RELEASE_PYTHON_YML_64=$RELEASE_PYTHON_YML_64" >> "$GITHUB_ENV"
 
-
     - name: Create and Push Branch
       run: |
         export VERSION=$(date +%Y%m%d)
@@ -45,6 +44,7 @@ jobs:
         fi
         echo $RELEASE_PYTHON_YML_64 | base64 --decode > .github/workflows/release-python.yml
         sed -i -E "0,/version = \".*\"/s/(version = \".+)(\".*)/\1$VERSION\2/" ./py-polars/Cargo.toml
+        sed -i '/\[project\]/,/^$/s/name = "polars"/name = "polars-nightly"/' "./py-polars/pyproject.toml"
         git add .
         git commit -m "Updated workflow for "$VERSION
         git push --set-upstream origin $VERSION

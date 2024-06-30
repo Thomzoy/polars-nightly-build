@@ -40,10 +40,6 @@ jobs:
         with:
           token: ${{ secrets.POLARS_RELEASE }}
 
-      - name: Change package name
-        run: |
-          sed -i '/\[project\]/,/^$/s/name = "polars"/name = "polars-nightly"/' "./py-polars/pyproject.toml"
-
       # Avoid potential out-of-memory errors
       - name: Set swap space for Linux
         if: matrix.os == 'ubuntu-latest'

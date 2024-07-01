@@ -43,7 +43,7 @@ jobs:
             git checkout -b $VERSION upstream/main
         fi
         echo $RELEASE_PYTHON_YML_64 | base64 --decode > .github/workflows/release-python.yml
-        sed -i -E "0,/version = \".*\"/s/(version = \".+)(\".*)/\1$VERSION\2/" ./py-polars/Cargo.toml
+        sed -i -E "0,/version = \".*\"/s/(version = \".+)(\".*)/\1-nightly\.$VERSION\2/" ./py-polars/Cargo.toml
         sed -i '/\[project\]/,/^$/s/name = "polars"/name = "polars-nightly"/' "./py-polars/pyproject.toml"
         git add .
         git commit -m "Updated workflow for "$VERSION

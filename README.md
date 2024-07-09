@@ -12,7 +12,7 @@ You can then import polars normaly via `import polars`
 The version number appends the build date (e.g. "20240625") to the `polars` version (e.g., "1.1.0"). For instance, to install polars version `1.1.0` built from the main branch on the 25th of June 2024, run:
 
 ```bash
-pip install "polars-nightly==1.1.0-20240625"
+pip install "polars-nightly==1.1.0.post20240625"
 ```
 
 ## How it works

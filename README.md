@@ -1,26 +1,25 @@
 # Nightly build of Polars's main branch
+## Usage
+To install using pip:
 
-Each build is available in a dedicated branch/tag named `nightly-YYYYMMDD`, with `YYYYMMDD` being the date of the build
-
-## How to use
-### 1. Using last available build
 ```bash
-git clone --depth=1 https://github.com/Thomzoy/polars-nighty.git
-cd polars-nightly
-git fetch --depth=1 --tags
-LAST_TAG=$(git describe --tags "$(git rev-list --tags --max-count=1)") # Get most recent tag
-git checkout tags/$LAST_TAG
-pip install --find-links=./dist polars
+pip install polars-nightly
 ```
 
-### 2. Using build from a specific date
-```bash
-git clone --depth=1 https://github.com/Thomzoy/polars-nighty.git
-cd polars-nightly
-git fetch --depth=1 --tags
-git checkout tags/<YYYYMMDD> # insert desired date here
-pip install --find-links=./dist polars
-```
-## Which builds are available ?
+You can then import polars normaly via `import polars`
 
-Just check the [tags](https://github.com/Thomzoy/polars-nightly/tags) !
+## Versioning
+The version number appends the build date (e.g. "20240625") to the `polars` version (e.g., "1.1.0"). For instance, to install polars version `1.1.0` built from the main branch on the 25th of June 2024, run:
+
+```bash
+pip install "polars-nightly==1.1.0-20240625"
+```
+
+## How it works
+
+Each day, the repo's CI
+* Fetches the main branch of [polars](https://github.com/pola-rs/polars)
+* Builds it
+* Pushes everything on this repo, on a branch named "%Y%m%d"
+* Add a tag with the same name
+* Releases the binaries on [PyPi](https://pypi.org/project/polars-nightly/)

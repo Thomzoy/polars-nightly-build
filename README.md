@@ -1,4 +1,4 @@
-# Nightly build of Polars's main branch
+# Nightly build of Polars' main branch
 ## Usage
 To install using pip:
 
